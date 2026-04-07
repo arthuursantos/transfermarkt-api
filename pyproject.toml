@@ -1,37 +1,46 @@
-[tool.poetry]
+[project]
 name = "transfermarkt-api"
 version = "3.0.0"
 description = "API service to get data from Transfermarkt"
-authors = ["Felipe Allegretti <felipe@allegretti.me>"]
-license = "MIT"
+authors = [{ name = "Felipe Allegretti", email = "felipe@allegretti.me" }]
+license = { text = "MIT" }
 readme = "README.md"
-packages = [{include = "app"}]
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "lxml>=5.3,<6",
+    "beautifulsoup4>=4.12,<5",
+    "requests>=2.32.4,<3",
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.34,<1",
+    "slowapi>=0.1.9,<1",
+    "pydantic-settings>=2.7,<3",
+    "pydantic>=2.10,<3",
+    "python-dateutil>=2.9,<3",
+    "google-adk[a2a]>=1.28,<2",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-lxml = "==5.3.0"
-beautifulsoup4 = "==4.12.3"
-requests = "==2.32.3"
-fastapi = "==0.115.6"
-uvicorn = {extras = ["standard"], version = "==0.34.0"}
-slowapi = "==0.1.9"
-pydantic-settings = "==2.7.1"
-pydantic= "==2.10.4"
-python-dateutil = "==2.9.0.post0"
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry.group.dev.dependencies]
-jupyter = "==1.0.0"
-setuptools = "==68.2.2"
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
 
-[tool.poetry.group.check.dependencies]
-black = "==24.8.0"
-ruff = "==0.6.1"
-interrogate = "==1.7.0"
-
-[tool.poetry.group.tests.dependencies]
-pytest = "==7.3.1"
-pytest-cov = "==4.1.0"
-schema = "==0.7.5"
+[dependency-groups]
+dev = [
+    "jupyter>=1,<2",
+    "setuptools>=68,<76",
+]
+check = [
+    "black>=24.8,<25",
+    "ruff>=0.6,<1",
+    "interrogate>=1.7,<2",
+]
+tests = [
+    "pytest>=7.3,<9",
+    "pytest-cov>=4.1,<6",
+    "schema>=0.7,<1",
+]
 
 [tool.black]
 line-length = 120

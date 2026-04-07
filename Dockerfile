@@ -1,13 +1,15 @@
-FROM python:3.9-slim-bullseye
+FROM python:3.13-slim
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH "${PYTHONPATH}:/app"
+ENV PYTHONPATH="/app"
 
 WORKDIR /app
-COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-install-project
 
-COPY . ./
+COPY . .
 
-CMD ["python", "app/main.py"]
+CMD ["uv", "run", "python", "app/main.py"]
