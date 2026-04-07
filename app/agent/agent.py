@@ -1,11 +1,19 @@
+import logging
+
 from google.adk.agents import Agent
 from google.adk.a2a.utils.agent_to_a2a import to_a2a
 
+from app.agent.router import routerModel
 from app.tools import ALL_TOOLS
 
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
+
+logger.info("Creating Tevez agent...")
+
 agent = Agent(
-    name="transfermarkt_agent",
-    model="gemini-2.0-flash",
+    name="Tevez",
+    model=routerModel("openrouter/google/gemini-2.0-flash-001"),
     description=(
         "A football data assistant that searches and retrieves detailed information "
         "about players, clubs, and competitions from Transfermarkt. It can look up "
@@ -44,4 +52,6 @@ agent = Agent(
     tools=ALL_TOOLS,
 )
 
+logger.info("Agent created successfully. Initializing A2A remote...")
 remote = to_a2a(agent, port=8001)
+logger.info("A2A remote ready on port 8001")
